@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "stop-airnode": "docker stop quick-deploy-container-airnode && docker rm quick-deploy-container-airnode",
+    "start-airnode": "cd ./airnode && docker run --detach --volume $(pwd)/config:/app/config --name quick-deploy-container-airnode api3/airnode-client:0.3.1 && docker logs --follow quick-deploy-container-airnode",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },

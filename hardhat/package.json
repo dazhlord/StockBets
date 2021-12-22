@@ -1,0 +1,36 @@
+{
+  "name": "hardhat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx hardhat compile",
+    "make-bet": "npx hardhat run --network localhost ./scripts/make-bet.js",
+    "call-bet": "npx hardhat run --network localhost ./scripts/call-bet.js",
+    "deploy-requester": "npx hardhat run --network localhost ./scripts/deploy-requester.js",
+    "sponsor-requester": "npx hardhat run --network localhost ./scripts/sponsor-requester.js",
+    "fund-sponsor-wallet": "npx hardhat run --network localhost ./scripts/fund-sponsor-wallet.js",
+    "fund-admin-wallet": "npx hardhat run --network localhost ./scripts/fund-admin-wallet.js",
+    "stop-airnode": "docker stop quick-deploy-container-airnode && docker rm quick-deploy-container-airnode",
+    "deploy-rrp": "npx hardhat run --network localhost ./scripts/deploy-rrp.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.3.4",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.5.2",
+    "hardhat": "^2.8.0"
+  },
+  "dependencies": {
+    "@api3/airnode-abi": "^0.3.1",
+    "@api3/airnode-admin": "^0.3.1",
+    "@api3/airnode-protocol": "^0.3.1",
+    "@openzeppelin/contracts": "^4.4.1",
+    "dotenv": "^10.0.0"
+  }
+}
