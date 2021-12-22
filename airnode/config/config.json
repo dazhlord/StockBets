@@ -118,10 +118,12 @@
           },
           "reservedParameters": [
             {
-              "name": "_type"
+              "name": "_type",
+              "fixed": "int256"
             },
             {
-              "name": "_path"
+              "name": "_path",
+              "fixed": "cases"
             },
             {
               "name": "_times"

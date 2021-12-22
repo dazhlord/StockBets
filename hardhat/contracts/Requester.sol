@@ -7,8 +7,8 @@ import "@api3/airnode-protocol/contracts/rrp/requesters/RrpRequester.sol";
 
 A simple requester contract that calls Airnode for Covid data.
 
-Users can bet on the cases of Covid-19 being higher or lower
-over the next 24 hours. 
+Users can bet on the daily cases of Covid-19 today being above or below
+the daily cases 24 hours from the initial bet. 
 
 The user would use the `makeBet` and `callBet` functions, while
 Airnode would handle the results of the bet with the other 2 
@@ -32,15 +32,11 @@ contract Requester is RrpRequester {
     // ============================================================
     // The API takes in an SQL statement in the POST body
     // ============================================================
-    // string public dailyCasesSQL =
-    //     "SELECT SUM(CONFIRMED) FROM JHU_DASHBOARD_COVID_19_GLOBAL WHERE COUNTRY_REGION = 'United States' AND PROVINCE_STATE = 'California';";
+    string public dailyCasesSQL =
+        "SELECT SUM(CONFIRMED) FROM JHU_DASHBOARD_COVID_19_GLOBAL WHERE COUNTRY_REGION = 'United States' AND PROVINCE_STATE = 'California';";
 
-    // bytes public parameters =
-    //     abi.encode(
-    //         bytes32("1BSabiuBa"),
-    //         bytes32("statement"),
-    //         dailyCasesSQL,
-    //     );
+    bytes public parameters =
+        abi.encode(bytes32("1S"), bytes32("statement"), dailyCasesSQL);
     // ============================================================
     // Airnode Params
     // ============================================================
@@ -51,7 +47,7 @@ contract Requester is RrpRequester {
         0xBaCbB77a52fA79309611bAe3b15426129740f43b;
 
     bytes32 public constant endpointId =
-        0xe13847f03ae6d0b93db6ba57d0dcb7456285d7f8f3cfb2feef13eaeaa26a5907;
+        0x7d11ecb8aa6482478859a752bb4c213b91b4bef230e47784b945200ec18d4ac5;
 
     mapping(bytes32 => bool) public incomingFulfillments;
     mapping(bytes32 => address) public requesterAddresses;
@@ -67,7 +63,7 @@ contract Requester is RrpRequester {
     // Make a bet on the cases of Covid-19 being higher or lower
     // Intended to be called by the player.
     // ============================================================
-    function makeBet(bool _above, bytes calldata parameters) external payable {
+    function makeBet(bool _above) external payable {
         require(!bets[msg.sender].open, "You already have a bet open");
         require(msg.value >= 0, "Please include your bet amount");
         require(msg.value <= address(this).balance, "House wallet is too low");
@@ -118,7 +114,7 @@ contract Requester is RrpRequester {
     // call their bet and claim their winnings. If they lost, they don't
     // need to do anything, since the funds will stay with the contract.
     // ============================================================
-    function callBet(bytes calldata parameters) external {
+    function callBet() external {
         require(bets[msg.sender].open, "You have no open bets");
 
         // ============================================================

@@ -25,7 +25,7 @@ async function main() {
   console.log("Done!");
   await sponsorRequester(requester.address);
   fs.writeFileSync(
-    "./requesterAddress.json",
+    "./scripts/requesterAddress.json",
     JSON.stringify({ address: requester.address })
   );
   console.log("Address saved to requesterAddress.json");

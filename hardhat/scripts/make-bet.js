@@ -27,7 +27,7 @@ async function main() {
 
   const params = [];
 
-  const receipt = await requester.makeBet(betAbove, encode(params), {
+  const receipt = await requester.makeBet(betAbove, {
     value: ethers.utils.parseEther("0.5"),
   });
 
