@@ -5,5 +5,4 @@ tasks:
     init: npm install
     command: npm run serve
   - name: Local Chain
-    init: cd hardhat && npm i
-    command: npx hardhat node
+    init: cd hardhat && npm i && npx hardhat node
