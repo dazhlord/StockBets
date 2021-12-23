@@ -1,8 +1,11 @@
 ports:
   - port: 8080
+    onOpen: open-browser
 tasks:
   - name: Front End
     init: npm install
     command: npm run serve
   - name: Local Chain
     init: cd hardhat && npm i && npx hardhat node
+  - name: Airnode
+    init: cd airnode && docker run --detach --volume $(pwd)/config:/app/config --name quick-deploy-container-airnode api3/airnode-client:0.3.1 && docker logs --follow quick-deploy-container-airnode
