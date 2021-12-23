@@ -1,0 +1,9 @@
+ports:
+  - port: 8080
+tasks:
+  - name: Front End
+    init: npm install
+    command: npm run serve
+  - name: Local Chain
+    init: cd hardhat && npm i
+    command: npx hardhat node
