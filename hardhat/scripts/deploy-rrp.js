@@ -14,9 +14,9 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  // Wait 5 seconds
-  await hre.sleep(5000);
-  
+  // Wait 5 seconds using promise
+  await new Promise(resolve => setTimeout(resolve, 5000));
+
   const RRP = await hre.ethers.getContractFactory("AirnodeRrp");
   const rrp = await RRP.deploy();
 
@@ -29,7 +29,7 @@ async function main() {
 // and properly handle errors.
 main()
   .then(() => process.exit(0))
-  .catch((error) => {
+  .catch(error => {
     console.error(error);
     process.exit(1);
   });
