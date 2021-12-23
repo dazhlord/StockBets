@@ -6,4 +6,7 @@ tasks:
     init: npm install
     command: npm run serve
   - name: Local Chain
-    init: cd hardhat && npm i && npx hardhat node && yarn deploy-rrp && yarn deploy-requester
+    init: cd hardhat && npm i && npx hardhat node
+  - name: hardhat
+    init: cd hardhat
+    command: yarn deploy-rrp && yarn deploy-requester
