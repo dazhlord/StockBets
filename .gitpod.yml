@@ -1,9 +1,11 @@
 ports:
   - port: 8080
-    onOpen: open-browser
+    onOpen: open-preview
 tasks:
   - name: Front End
     init: npm install
     command: npm run serve
   - name: Local Chain
     init: cd hardhat && npm i && npx hardhat node
+  - name: hardhat
+    command: yarn deploy-contracts
