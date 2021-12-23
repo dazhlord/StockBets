@@ -14,6 +14,9 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
+  // Wait 5 seconds
+  await hre.sleep(5000);
+  
   const RRP = await hre.ethers.getContractFactory("AirnodeRrp");
   const rrp = await RRP.deploy();
 

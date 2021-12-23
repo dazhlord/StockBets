@@ -6,7 +6,7 @@ tasks:
     init: npm install
     command: npm run serve
   - name: Local Chain
-    init: cd hardhat && npm i && npx hardhat node && gp sync-done node
+    init: cd hardhat && npm i && gp sync-done node && npx hardhat node
   - name: hardhat
     init: gp sync-await node
     command: yarn deploy-contracts
