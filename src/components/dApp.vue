@@ -93,7 +93,10 @@ export default {
   }),
   computed: {
     requesterAddress() {
-      return "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf";
+      const json = require("../../hardhat/scripts/requesterAddress.json");
+      if (json.address) {
+        return json.address;
+      } else return "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf";
     },
     requesterAbi() {
       const requesterArtifacts = require("../artifacts/contracts/Requester.sol/Requester.json");
@@ -168,8 +171,8 @@ export default {
         value: ethers.utils.parseEther(`${this.betAmount}`),
       });
       // Wait until the transaction is mined
-      const requestId = await new Promise((resolve) =>
-        provider.once(receipt.hash, (tx) => {
+      const requestId = await new Promise(resolve =>
+        provider.once(receipt.hash, tx => {
           const parsedLog = airnodeRrp.interface.parseLog(tx.logs[0]);
           resolve(parsedLog.args.requestId);
         })
@@ -177,7 +180,7 @@ export default {
       console.log("Request made with id:", requestId);
       console.log("Request for todays cases made:\n", requestId);
 
-      await new Promise((resolve) =>
+      await new Promise(resolve =>
         provider.once(
           airnodeRrp.filters.FulfilledRequest(null, requestId),
           resolve
@@ -192,8 +195,8 @@ export default {
       console.log({ above: this.above });
       const receipt = await bettingContract.callBet();
       // Wait until the transaction is mined
-      const requestId = await new Promise((resolve) =>
-        provider.once(receipt.hash, (tx) => {
+      const requestId = await new Promise(resolve =>
+        provider.once(receipt.hash, tx => {
           const parsedLog = airnodeRrp.interface.parseLog(tx.logs[0]);
           resolve(parsedLog.args.requestId);
         })
@@ -201,7 +204,7 @@ export default {
       console.log("Request made with id:", requestId);
       console.log("Request for todays cases made:\n", requestId);
 
-      await new Promise((resolve) =>
+      await new Promise(resolve =>
         provider.once(
           airnodeRrp.filters.FulfilledRequest(null, requestId),
           resolve
