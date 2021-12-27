@@ -1,89 +1,94 @@
 <template>
   <v-container>
     <br />
-    <br />
-    <br />
     <v-row justify="center" align="center">
       <v-col cols="12" md="9">
         <v-card elevation="10">
-          <v-card-title>
-            <h1>CovidBets</h1>
-            <v-spacer></v-spacer>
-            <template v-if="walletConnected">
-              House Wallet: {{ houseWalletBalance }} ETH
-            </template>
-          </v-card-title>
-          <v-card-subtitle>
-            Covid cases prediction game powered by Snowflake DB and Airnode
-          </v-card-subtitle>
+          <v-card-text class="black--text">
+            <v-card-title>
+              <h1>CovidBets</h1>
+              <v-spacer></v-spacer>
+              <template v-if="walletConnected">
+                House Wallet: {{ houseWalletBalance }} ETH
+              </template>
+            </v-card-title>
+            <v-card-subtitle>
+              Covid cases prediction game powered by Snowflake DB and Airnode
+            </v-card-subtitle>
 
-          <v-card-text align="center" justify="center">
-            <v-sheet v-if="!walletConnected">
-              <v-btn @click="connectWallet" outlined color="primary">Connect Your Wallet</v-btn>
-            </v-sheet>
-            <v-sheet v-else>
-              <v-card-title>Bet Details</v-card-title>
-              <v-card-text>
-                <v-row align="center" justify="center">
-                  <v-col cols="12" md="5">
-                    <p>I think that Covid-19 cases tomorrow will be</p>
+            <v-card-text align="center" justify="center">
+              <v-sheet v-if="!walletConnected">
+                <v-btn @click="connectWallet" outlined color="primary"
+                  >Connect Your Wallet</v-btn
+                >
+              </v-sheet>
+              <v-sheet v-else>
+                <v-card-title>Bet Details</v-card-title>
+                <v-card-text>
+                  <v-row align="center" justify="center">
+                    <v-col cols="12" md="5">
+                      <p>I think that Covid-19 cases tomorrow will be</p>
 
-                    <v-select
-                      :items="['Higher', 'Lower']"
-                      v-model="betDirection"
-                      outlined
-                      color="primary"
-                      :readonly="bet.open || loading"
-                    >
-                      <template v-slot:selection="{ item }">
-                        <span class="d-flex justify-center" style="width: 100%">
-                          {{ item }}
-                        </span>
-                      </template>
-                    </v-select>
-                    <p>than they are today.</p>
-                  </v-col>
-                  <v-col cols="12" md="1"> </v-col>
-                  <v-col cols="12" md="5" align="center" justify="center">
-                    <v-card-text>
-                      <v-text-field
-                        suffix="ETH"
-                        class="amount"
-                        color="primary"
-                        align="right"
-                        label="Bet Amount"
+                      <v-select
+                        :items="['Higher', 'Lower']"
+                        v-model="betDirection"
                         outlined
+                        color="primary"
                         :readonly="bet.open || loading"
-                        v-model="betAmount"
-                        type="number"
-                      />
-                    </v-card-text>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-sheet>
+                      >
+                        <template v-slot:selection="{ item }">
+                          <span
+                            class="d-flex justify-center"
+                            style="width: 100%"
+                          >
+                            {{ item }}
+                          </span>
+                        </template>
+                      </v-select>
+                      <p>than they are today.</p>
+                    </v-col>
+                    <v-col cols="12" md="1"> </v-col>
+                    <v-col cols="12" md="5" align="center" justify="center">
+                      <v-card-text>
+                        <v-text-field
+                          suffix="ETH"
+                          class="amount"
+                          color="primary"
+                          align="right"
+                          label="Bet Amount"
+                          outlined
+                          :readonly="bet.open || loading"
+                          v-model="betAmount"
+                          type="number"
+                        />
+                      </v-card-text>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-sheet>
+            </v-card-text>
+            <v-card-actions v-if="walletConnected">
+              <v-spacer></v-spacer>
+              <v-btn
+                :disabled="bet.open || loading"
+                @click="makeBet"
+                outlined
+                color="primary"
+              >
+                Place Bet
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                :disabled="!bet.open || loading"
+                @click="callBet"
+                outlined
+                color="primary"
+              >
+                Call Bet
+              </v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
           </v-card-text>
-          <v-card-actions v-if="walletConnected">
-            <v-spacer></v-spacer>
-            <v-btn
-              :disabled="bet.open || loading"
-              @click="makeBet"
-              outlined
-              color="primary"
-            >
-              Place Bet
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn
-              :disabled="!bet.open || loading"
-              @click="callBet"
-              outlined
-              color="primary"
-            >
-              Call Bet
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
