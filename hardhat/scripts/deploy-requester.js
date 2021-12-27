@@ -1,5 +1,6 @@
 const hre = require("hardhat");
 const { sponsorRequester } = require("./sponsor-requester");
+const { fundSponsorWallet } = require("./fund-sponsor-wallet");
 const fs = require("fs");
 
 async function main() {
@@ -29,13 +30,14 @@ async function main() {
     JSON.stringify({ address: requester.address })
   );
   console.log("Address saved to requesterAddress.json");
+  await fundSponsorWallet();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main()
   .then(() => process.exit(0))
-  .catch((error) => {
+  .catch(error => {
     console.error(error);
     process.exit(1);
   });

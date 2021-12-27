@@ -7,7 +7,7 @@
     <br />
     <v-row justify="center" align="center">
       <v-col cols="12" md="9">
-        <v-card>
+        <v-card outlined>
           <v-card-title>
             <h1>CovidBets</h1>
             <v-spacer></v-spacer>
@@ -26,35 +26,35 @@
             <v-sheet v-else>
               <v-card-title>Bet Details</v-card-title>
               <v-card-text>
-                <v-row>
-                  <v-col cols="12" md="5">
-                    <p>
-                      I think that Covid-19 cases tomorrow will be
-                      <v-select
-                        :items="['Higher', 'Lower']"
-                        v-model="betDirection"
-                      >
-                        <template v-slot:selection="{ item }">
-                          <span
-                            class="d-flex justify-center"
-                            style="width: 100%"
-                          >
-                            {{ item }}
-                          </span>
-                        </template>
-                      </v-select>
-                      than they are today.
-                    </p>
+                <v-row align="center" justify="center">
+                  <v-col cols="12" md="6">
+                    <p>I think that Covid-19 cases tomorrow will be</p>
+
+                    <v-select
+                      :items="['Higher', 'Lower']"
+                      v-model="betDirection"
+                      outlined
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%">
+                          {{ item }}
+                        </span>
+                      </template>
+                    </v-select>
+                    <p>than they are today.</p>
                   </v-col>
-                  <v-col cols="12" md="5">
+                  <v-col cols="12" md="6" align="center" justify="center">
                     <v-card-text>
+
                       <v-text-field
-                        label="Bet Amount"
                         suffix="ETH"
                         class="amount"
+                        label="Bet Amount"
+                        outlined
                         v-model="betAmount"
                         type="number"
                       />
+
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -80,7 +80,7 @@ export default {
   name: "dApp",
 
   data: () => ({
-    walletConnected: true,
+    walletConnected: false,
     provider: null,
     signer: null,
     address: null,

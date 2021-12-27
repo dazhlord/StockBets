@@ -41,10 +41,10 @@ contract Requester is RrpRequester {
     // Airnode Params
     // ============================================================
     address public constant airnodeWalletAddress =
-        0x251B60BAb5a32522183427b160E7c07A1F2F1c02;
+        0x13CdBB30C503d7240aa7d0C2Eb627E10d4B83004;
 
     address public constant sponsorWalletAddress =
-        0xBaCbB77a52fA79309611bAe3b15426129740f43b;
+        0xd94B3D53e0E1544D1fDf6eBa13d46544fE70A1b1;
 
     bytes32 public constant endpointId =
         0x7d11ecb8aa6482478859a752bb4c213b91b4bef230e47784b945200ec18d4ac5;

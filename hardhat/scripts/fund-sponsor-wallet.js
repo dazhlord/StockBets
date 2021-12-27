@@ -14,7 +14,7 @@ async function fundSponsorWallet() {
   );
 
   // Send 2 eth to airnode wallet
-  const tx = await accounts[1].sendTransaction({
+  const tx = await accounts[3].sendTransaction({
     to: sponsorWalletAddress,
     value: ethers.utils.parseEther("5"),
   });
@@ -22,6 +22,8 @@ async function fundSponsorWallet() {
 
   console.log("Done!");
 }
+
+// fundSponsorWallet();
 
 module.exports = {
   fundSponsorWallet,
