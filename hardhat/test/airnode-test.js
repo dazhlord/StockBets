@@ -14,7 +14,7 @@ describe("Airnode Admin", function () {
       "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
     );
     const airnodeWallet = new ethers.Wallet.fromMnemonic(
-      "impose again erupt picture special urban stage actor faith response soup desert"
+      process.env.AIRNODE_WALLET_MNEMONIC
     );
     // AirnodeWallet Balance
 

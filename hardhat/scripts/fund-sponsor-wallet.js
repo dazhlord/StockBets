@@ -2,7 +2,7 @@ require("dotenv").config();
 const hre = require("hardhat");
 const airnodeAdmin = require("@api3/airnode-admin");
 
-async function main() {
+async function fundSponsorWallet() {
   const mnemonic = process.env.AIRNODE_WALLET_MNEMONIC;
   const accounts = await hre.ethers.getSigners();
   //   const providerURL = process.env.PROVIDER_URL;
@@ -23,11 +23,6 @@ async function main() {
   console.log("Done!");
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+module.exports = {
+  fundSponsorWallet,
+};

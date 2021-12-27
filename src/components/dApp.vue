@@ -51,6 +51,7 @@
                       <v-text-field
                         label="Bet Amount"
                         suffix="ETH"
+                        class="amount"
                         v-model="betAmount"
                         type="number"
                       />
@@ -79,7 +80,7 @@ export default {
   name: "dApp",
 
   data: () => ({
-    walletConnected: false,
+    walletConnected: true,
     provider: null,
     signer: null,
     address: null,
@@ -167,15 +168,15 @@ export default {
       }
     },
     async makeBet() {
-      console.log("Betting");
+      console.log("Betting...");
       const { provider, airnodeRrp, bettingContract } = this;
       console.log({ above: this.above });
       const receipt = await bettingContract.makeBet(this.above, {
         value: ethers.utils.parseEther(`${this.betAmount}`),
       });
       // Wait until the transaction is mined
-      const requestId = await new Promise((resolve) =>
-        provider.once(receipt.hash, (tx) => {
+      const requestId = await new Promise(resolve =>
+        provider.once(receipt.hash, tx => {
           const parsedLog = airnodeRrp.interface.parseLog(tx.logs[0]);
           resolve(parsedLog.args.requestId);
         })
@@ -183,7 +184,7 @@ export default {
       console.log("Request made with id:", requestId);
       console.log("Request for todays cases made:\n", requestId);
 
-      await new Promise((resolve) =>
+      await new Promise(resolve =>
         provider.once(
           airnodeRrp.filters.FulfilledRequest(null, requestId),
           resolve
@@ -198,8 +199,8 @@ export default {
       console.log({ above: this.above });
       const receipt = await bettingContract.callBet();
       // Wait until the transaction is mined
-      const requestId = await new Promise((resolve) =>
-        provider.once(receipt.hash, (tx) => {
+      const requestId = await new Promise(resolve =>
+        provider.once(receipt.hash, tx => {
           const parsedLog = airnodeRrp.interface.parseLog(tx.logs[0]);
           resolve(parsedLog.args.requestId);
         })
@@ -207,7 +208,7 @@ export default {
       console.log("Request made with id:", requestId);
       console.log("Request for todays cases made:\n", requestId);
 
-      await new Promise((resolve) =>
+      await new Promise(resolve =>
         provider.once(
           airnodeRrp.filters.FulfilledRequest(null, requestId),
           resolve
@@ -219,3 +220,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Make the .amount bigger */
+.amount {
+  font-size: 1.5rem;
+}
+</style>

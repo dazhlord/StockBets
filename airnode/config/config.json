@@ -23,8 +23,7 @@
       "enabled": false
     },
     "httpGateway": {
-      "enabled": true,
-      "apiKey": "${HTTP_GATEWAY_API_KEY}"
+      "enabled": false
     },
     "logFormat": "plain",
     "logLevel": "INFO",
