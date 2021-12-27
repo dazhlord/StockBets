@@ -1,6 +1,9 @@
 <template>
-  <v-app>
-    <v-app-bar app outlined>
+  <v-app
+    id="main"
+    :style="{ background: $vuetify.theme.themes[theme].background }"
+  >
+    <v-app-bar app outlined color="primary">
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -41,5 +44,12 @@ export default {
   data: () => ({
     //
   }),
+  computed: {
+    theme() {
+      return this.$vuetify.theme.dark ? "dark" : "light";
+    },
+  },
 };
 </script>
+
+<style></style>

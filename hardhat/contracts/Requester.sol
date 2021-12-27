@@ -105,6 +105,7 @@ contract Requester is RrpRequester {
         int256 cases = abi.decode(data, (int256));
         requestResults[requestId] = cases;
         address requester = requesterAddresses[requestId];
+        require(!bets[requester].open, "Bet already opened!");
         bets[requester].open = true;
         bets[requester].yesterdaysCases = cases;
     }
@@ -149,6 +150,11 @@ contract Requester is RrpRequester {
     {
         require(incomingFulfillments[requestId], "No such request made");
         delete incomingFulfillments[requestId];
+
+        address requester = requesterAddresses[requestId];
+        require(bets[requester].open, "Bet already closed");
+        bets[requester].open = false;
+
         int256 cases = abi.decode(data, (int256));
 
         // Simulates higher cases than yesterday
@@ -156,8 +162,6 @@ contract Requester is RrpRequester {
 
         requestResults[requestId] = cases;
 
-        address requester = requesterAddresses[requestId];
-        bets[requester].open = false;
         Bet memory bet = bets[requester];
         if (
             (bet.above && cases > bet.yesterdaysCases) ||
