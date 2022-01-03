@@ -2,13 +2,13 @@
 
 > A Proof-of-Concept that uses Airnode to send SQL statements from a smart contract to query data directly from a Snowflake DB.
 
-We have a live version of this dApp available on Ropsten [Here]().
+We have a live version of this dApp available on Rinkeby [Here]().
 
 ## Under the Hood
 
 This PoC illustrates how easy it is to set up a contract to make API calls to an API that is running an Airnode. The process goes like this:
 
-1. An [Airnode RRP contract](https://docs.api3.org/airnode/v0.3/concepts/) has already been deployed by the API3 team on all of the Ethnets. We will be using the [Ropsten RRP](https://docs.api3.org/airnode/v0.3/reference/airnode-addresses.html#airnoderrp). This is where our Airnode will expect us to put all of our requests.
+1. An [Airnode RRP contract](https://docs.api3.org/airnode/v0.3/concepts/) has already been deployed by the API3 team on all of the Ethnets. We will be using the [Rinkeby RRP](https://docs.api3.org/airnode/v0.3/reference/airnode-addresses.html#airnoderrp). This is where our Airnode will expect us to put all of our requests.
 
 2. An [Airnode](/airnode) that is configured to read from the RRP from the first step and to call the [Snowflake API](/api) has been deployed to AWS.
 
@@ -23,7 +23,7 @@ This PoC illustrates how easy it is to set up a contract to make API calls to an
 
 - [Hardhat](/hardhat) - All of the Smart Contracts used in this PoC.
 - [Airnode](/airnode) - Everything you need to run an Oracle.
-- [Front End GUI](/frontend)
+- [Front End GUI](/frontend) - For easy interaction with the Betting Contract
 - [API](/api) - The Snowflake proxy API that handles authentication.
 
 ## Instructions
