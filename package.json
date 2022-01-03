@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "get-addresses": "cd hardhat && npx hardhat test",
     "deploy-contracts": "cd hardhat && yarn deploy-rrp && yarn deploy-requester",
+    "download-airnode": "docker pull api3/airnode-client:0.3.1",
     "stop-airnode": "docker stop quick-deploy-container-airnode && docker rm quick-deploy-container-airnode",
     "start-airnode": "cd ./airnode && docker run --detach --volume $(pwd)/config:/app/config --name quick-deploy-container-airnode api3/airnode-client:0.3.1 && docker logs --follow quick-deploy-container-airnode"
   },
