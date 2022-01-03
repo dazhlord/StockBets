@@ -1,24 +1,21 @@
 # covid-bet-fe
 
-## Project setup
-```
+# CovidBets Front End
+
+A very simple GUI written in Vue. Allows for easy interaction with the [Betting Contract](../hardhat/contracts/Requester.sol).
+
+> [Live Version Here](amplify.com)
+
+It is set up to work on Rinkeby, but can be modified to work with other chains.
+
+### Install Dependencies
+
+```sh
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
+### Start Locally with hot reloads
+
+```sh
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

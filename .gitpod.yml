@@ -5,8 +5,5 @@ tasks:
   - name: Front End
     init: cd frontend && npm install
     command: npm run serve
-  - name: Local Chain
-    init: cd hardhat && npm i && gp sync-done node && npx hardhat node
-  - name: hardhat
-    init: gp sync-await node
-    command: yarn deploy-contracts
+  - name: Airnode
+    init: yarn start-airnode
