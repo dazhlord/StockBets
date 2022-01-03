@@ -3,7 +3,8 @@ ports:
     onOpen: open-preview
 tasks:
   - name: Build Contracts
-    init: cd hardhat && yarn build
+    init: cd hardhat && npm i
+    command: yarn build
   - name: Front End
     init: cd frontend && npm install
     command: npm run serve
