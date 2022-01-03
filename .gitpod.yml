@@ -4,10 +4,10 @@ ports:
 tasks:
   - name: Build Contracts
     init: cd hardhat && npm i
-    command: yarn build
-  - name: Front End
+    command: cd hardhat && yarn build
+  - name: FrontEnd
     init: cd frontend && npm install
-    command: npm run serve
+    command: cd frontend && npm run serve
   - name: Airnode
     init: yarn download-airnode
     command: yarn start-airnode
