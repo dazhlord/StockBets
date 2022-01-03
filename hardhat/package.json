@@ -9,6 +9,7 @@
     "make-bet": "npx hardhat run --network localhost ./scripts/make-bet.js",
     "call-bet": "npx hardhat run --network localhost ./scripts/call-bet.js",
     "deploy-requester": "npx hardhat run --network localhost ./scripts/deploy-requester.js",
+    "rinkeby:deploy-requester": "npx hardhat run --network rinkeby ./scripts/deploy-requester.js",
     "sponsor-requester": "npx hardhat run --network localhost ./scripts/sponsor-requester.js",
     "fund-sponsor-wallet": "npx hardhat run --network localhost ./scripts/fund-sponsor-wallet.js",
     "fund-admin-wallet": "npx hardhat run --network localhost ./scripts/fund-admin-wallet.js",

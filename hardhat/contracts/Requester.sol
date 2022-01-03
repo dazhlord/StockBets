@@ -33,10 +33,18 @@ contract Requester is RrpRequester {
     // The API takes in an SQL statement in the POST body
     // ============================================================
     string public constant dailyCasesSQL =
-        "SELECT SUM(CONFIRMED) FROM JHU_DASHBOARD_COVID_19_GLOBAL WHERE COUNTRY_REGION = 'United States' AND PROVINCE_STATE = 'California';";
+        "SELECT SUM(CONFIRMED) AS Cases FROM JHU_DASHBOARD_COVID_19_GLOBAL WHERE COUNTRY_REGION = 'United States' AND LAST_REPORTED_FLAG = TRUE;";
 
     bytes public parameters =
-        abi.encode(bytes32("1S"), bytes32("statement"), dailyCasesSQL);
+        abi.encode(
+            bytes32("1SSS"),
+            bytes32("statement"),
+            dailyCasesSQL,
+            bytes32("_path"),
+            "CASES",
+            bytes32("_type"),
+            "int256"
+        );
     // ============================================================
     // Airnode Params
     // ============================================================
@@ -47,7 +55,7 @@ contract Requester is RrpRequester {
         0x1648cF440ee5b0dA25DFe78E7CBB94668a374c94;
 
     bytes32 public constant endpointId =
-        0x7d11ecb8aa6482478859a752bb4c213b91b4bef230e47784b945200ec18d4ac5;
+        0xd3e4bdc2aedbdd3a24942b92486d51fdab98a2e1f3bdc5a3297be8752d5654e0;
 
     mapping(bytes32 => bool) public incomingFulfillments;
     mapping(bytes32 => address) public requesterAddresses;

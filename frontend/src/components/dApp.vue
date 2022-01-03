@@ -182,11 +182,11 @@ export default {
   computed: {
     requesterAddress() {
       try {
-        const json = require("../../hardhat/scripts/requesterAddress.json");
+        const json = require("../../../hardhat/scripts/requesterAddress.json");
         return json.address;
       } catch (error) {
         console.log(error);
-        return "0x8f86403A4DE0BB5791fa46B8e795C547942fE4Cf";
+        return "0xd5C5c9f0124056B1a91dcD8c19595A167f7f1DF2";
       }
     },
     requesterAbi() {
@@ -223,8 +223,8 @@ export default {
         await this.provider.send("eth_requestAccounts", []);
         this.signer = this.provider.getSigner();
         this.address = await this.signer.getAddress();
-        this.chainId = await this.provider.getNetwork();
-
+        const network = await this.provider.getNetwork();
+        this.chainId = network.chainId;
         console.log("Account:", this.address);
         this.walletConnected = true;
         this.bettingContract = new ethers.Contract(
@@ -304,8 +304,8 @@ export default {
           value: ethers.utils.parseEther(`${this.betAmount}`),
         });
         // Wait until the transaction is mined
-        const requestId = await new Promise(resolve =>
-          provider.once(receipt.hash, tx => {
+        const requestId = await new Promise((resolve) =>
+          provider.once(receipt.hash, (tx) => {
             const parsedLog = airnodeRrp.interface.parseLog(tx.logs[0]);
             resolve(parsedLog.args.requestId);
           })
@@ -315,7 +315,7 @@ export default {
         this.printToLog("RequestId: " + requestId);
         this.printToLog("Waiting for Airnode to respond with COVID cases...");
 
-        await new Promise(resolve =>
+        await new Promise((resolve) =>
           provider.once(
             airnodeRrp.filters.FulfilledRequest(null, requestId),
             resolve
@@ -340,8 +340,8 @@ export default {
         const receipt = await bettingContract.callBet();
 
         // Wait until the transaction is mined
-        const requestId = await new Promise(resolve =>
-          provider.once(receipt.hash, tx => {
+        const requestId = await new Promise((resolve) =>
+          provider.once(receipt.hash, (tx) => {
             const parsedLog = airnodeRrp.interface.parseLog(tx.logs[0]);
             resolve(parsedLog.args.requestId);
           })
@@ -350,7 +350,7 @@ export default {
         this.printToLog("RequestId: " + requestId);
         this.printToLog("Waiting for Airnode to respond with COVID cases...");
 
-        await new Promise(resolve =>
+        await new Promise((resolve) =>
           provider.once(
             airnodeRrp.filters.FulfilledRequest(null, requestId),
             resolve

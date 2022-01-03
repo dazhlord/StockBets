@@ -1,5 +1,3 @@
-# covid-bet-fe
-
 # CovidBets Front End
 
 A very simple GUI written in Vue. Allows for easy interaction with the [Betting Contract](../hardhat/contracts/Requester.sol).

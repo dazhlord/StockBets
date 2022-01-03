@@ -3,11 +3,11 @@
     {
       "authorizers": [],
       "contracts": {
-        "AirnodeRrp": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+        "AirnodeRrp": "0xC11593B87f258672b8eB02d9A723a429b15E9E03"
       },
-      "id": "31337",
+      "id": "4",
       "providers": {
-        "exampleProvider": {
+        "Rinkeby": {
           "url": "${PROVIDER_URL}"
         }
       },
@@ -19,40 +19,31 @@
       "type": "local"
     },
     "airnodeWalletMnemonic": "${AIRNODE_WALLET_MNEMONIC}",
+    "logFormat": "plain",
+    "logLevel": "INFO",
+    "nodeVersion": "0.3.1",
+    "stage": "Staging",
     "heartbeat": {
       "enabled": false
     },
     "httpGateway": {
-      "enabled": false
-    },
-    "logFormat": "plain",
-    "logLevel": "INFO",
-    "nodeVersion": "0.3.0",
-    "stage": "dev"
+      "enabled": true,
+      "apiKey": "${HTTP_GATEWAY_API_KEY}"
+    }
   },
   "triggers": {
     "rrp": [
       {
-        "endpointId": "0xe13847f03ae6d0b93db6ba57d0dcb7456285d7f8f3cfb2feef13eaeaa26a5907",
-        "endpointName": "GET /getCases",
-        "oisTitle": "CamsCovidCases"
-      },
-      {
-        "endpointId": "0x7d11ecb8aa6482478859a752bb4c213b91b4bef230e47784b945200ec18d4ac5",
-        "endpointName": "POST /getCases",
-        "oisTitle": "CamsCovidCases"
-      },
-      {
-        "endpointId": "0x4f40ca5872c84d3e09c511cae1245a8c83246ca7bdec5afbe57d1fb17ef5fa8d",
-        "endpointName": "GET /test",
-        "oisTitle": "CamsCovidCases"
+        "endpointId": "0xd3e4bdc2aedbdd3a24942b92486d51fdab98a2e1f3bdc5a3297be8752d5654e0",
+        "endpointName": "POST /sendStatement",
+        "oisTitle": "CovidBetsAPI"
       }
     ]
   },
   "ois": [
     {
       "oisFormat": "1.0.0",
-      "title": "CamsCovidCases",
+      "title": "CovidBetsAPI",
       "version": "0.3.1",
       "apiSpecifications": {
         "servers": [
@@ -65,10 +56,7 @@
           "securitySchemes": {}
         },
         "paths": {
-          "/getCases": {
-            "get": {
-              "parameters": []
-            },
+          "/sendStatement": {
             "post": {
               "parameters": [
                 {
@@ -77,52 +65,22 @@
                 }
               ]
             }
-          },
-          "/test": {
-            "get": {
-              "parameters": []
-            }
           }
         }
       },
       "endpoints": [
         {
-          "name": "GET /getCases",
-          "operation": {
-            "method": "get",
-            "path": "/getCases"
-          },
-          "reservedParameters": [
-            {
-              "name": "_type",
-              "fixed": "int256"
-            },
-            {
-              "name": "_path",
-              "fixed": "cases"
-            },
-            {
-              "name": "_times"
-            }
-          ],
-          "fixedOperationParameters": [],
-          "parameters": [],
-          "testable": true
-        },
-        {
-          "name": "POST /getCases",
+          "name": "POST /sendStatement",
           "operation": {
             "method": "post",
-            "path": "/getCases"
+            "path": "/sendStatement"
           },
           "reservedParameters": [
             {
-              "name": "_type",
-              "fixed": "int256"
+              "name": "_type"
             },
             {
-              "name": "_path",
-              "fixed": "cases"
+              "name": "_path"
             },
             {
               "name": "_times"
@@ -138,27 +96,6 @@
               }
             }
           ],
-          "testable": true
-        },
-        {
-          "name": "GET /test",
-          "operation": {
-            "method": "get",
-            "path": "/test"
-          },
-          "reservedParameters": [
-            {
-              "name": "_type"
-            },
-            {
-              "name": "_path"
-            },
-            {
-              "name": "_times"
-            }
-          ],
-          "fixedOperationParameters": [],
-          "parameters": [],
           "testable": true
         }
       ]
