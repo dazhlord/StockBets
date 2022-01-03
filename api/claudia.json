@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "snowflake-api-node-executor",
+    "name": "snowflake-api-node",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "tp0oxzw0fd"
+  }
+}

@@ -10,9 +10,7 @@ describe("Airnode Admin", function () {
   it("Can get wallet credentials", async function () {
     const [account] = await hre.ethers.getSigners();
     const Requester = await ethers.getContractFactory("Requester");
-    const requester = await Requester.attach(
-      "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
-    );
+   
     const airnodeWallet = new ethers.Wallet.fromMnemonic(
       process.env.AIRNODE_WALLET_MNEMONIC
     );

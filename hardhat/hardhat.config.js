@@ -24,7 +24,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 module.exports = {
   solidity: "0.8.9",
   paths: {
-    artifacts: "../src/artifacts",
+    artifacts: "../frontend/src/artifacts",
   },
   networks: {
     // hardhat: {

@@ -32,7 +32,7 @@ contract Requester is RrpRequester {
     // ============================================================
     // The API takes in an SQL statement in the POST body
     // ============================================================
-    string public dailyCasesSQL =
+    string public constant dailyCasesSQL =
         "SELECT SUM(CONFIRMED) FROM JHU_DASHBOARD_COVID_19_GLOBAL WHERE COUNTRY_REGION = 'United States' AND PROVINCE_STATE = 'California';";
 
     bytes public parameters =
@@ -41,10 +41,10 @@ contract Requester is RrpRequester {
     // Airnode Params
     // ============================================================
     address public constant airnodeWalletAddress =
-        0x13CdBB30C503d7240aa7d0C2Eb627E10d4B83004;
+        0x251B60BAb5a32522183427b160E7c07A1F2F1c02;
 
     address public constant sponsorWalletAddress =
-        0xd94B3D53e0E1544D1fDf6eBa13d46544fE70A1b1;
+        0xBaCbB77a52fA79309611bAe3b15426129740f43b;
 
     bytes32 public constant endpointId =
         0x7d11ecb8aa6482478859a752bb4c213b91b4bef230e47784b945200ec18d4ac5;

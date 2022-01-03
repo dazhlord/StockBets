@@ -3,7 +3,7 @@ ports:
     onOpen: open-preview
 tasks:
   - name: Front End
-    init: npm install
+    init: cd frontend && npm install
     command: npm run serve
   - name: Local Chain
     init: cd hardhat && npm i && gp sync-done node && npx hardhat node

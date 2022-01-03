@@ -23,7 +23,7 @@ async function sponsorRequester(requesterAddress) {
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
-// main()
+// sponsorRequester("0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6")
 //   .then(() => process.exit(0))
 //   .catch((error) => {
 //     console.error(error);
