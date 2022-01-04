@@ -251,6 +251,11 @@ export default {
         this.sponsorWalletBalance = ethers.utils.formatEther(
           this.sponsorWalletBalance
         );
+        console.log({
+          sponsorBalance: ethers.utils
+            .parseEther(this.sponsorWalletBalance)
+            .toString(),
+        });
 
         this.bet = await this.bettingContract.bets(this.address);
         this.betAmount = ethers.utils.formatEther(this.bet.amount);
@@ -272,7 +277,8 @@ export default {
       }
     },
     checkSponsorWallet() {
-      if (this.sponsorWalletBalance == 0) {
+      const wei = ethers.utils.parseEther(this.sponsorWalletBalance);
+      if (wei <= 500000000000000) {
         this.sponsorWalletDialog = true;
         return false;
       } else return true;
