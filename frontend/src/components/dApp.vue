@@ -194,7 +194,8 @@ export default {
       return requesterArtifacts.abi;
     },
     rrpAbi() {
-      const rrpArtifacts = require("../artifacts/@api3/airnode-protocol/contracts/rrp/AirnodeRrp.sol/AirnodeRrp.json");
+      const airnodeProtocol = require("@api3/airnode-protocol");
+      const rrpArtifacts = airnodeProtocol.AirnodeRrpFactory;
       return rrpArtifacts.abi;
     },
 
