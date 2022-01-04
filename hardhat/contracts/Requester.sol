@@ -128,11 +128,22 @@ contract Requester is RrpRequester {
 
         // ============================================================
         // Set your time constraints here.
-        // For example, must be between 24 and 26 hours after the start of the bet.
+        // For example, a player can only call their bet between 24 and 26 hours
+        // after the start of the bet.
+        //
+        // For the sake of the example, we'll leave this part out and add 1 case
+        // to the results to mock a higher response.
         // ============================================================
-
-        // Set a window for users to claim their winnings or else the
-        // house keeps their funds.
+        //
+        // require(
+        //     block.timestamp - bets[msg.sender].startTime >= 1 days,
+        //     "You must wait 24 hours before calling your bet"
+        // );
+        //
+        // if (block.timestamp - bets[msg.sender].startTime >= 26 hours) {
+        //     bets[msg.sender].open = false;
+        //     revert("Your bet has expired");
+        // }
 
         bytes32 requestId = airnodeRrp.makeFullRequest(
             airnodeWalletAddress,
@@ -166,7 +177,7 @@ contract Requester is RrpRequester {
         int256 cases = abi.decode(data, (int256));
 
         // Simulates higher cases than yesterday
-        cases += 1000;
+        cases += 1;
 
         requestResults[requestId] = cases;
 
