@@ -2,7 +2,7 @@
 
 A very simple GUI written in Vue. Allows for easy interaction with the [Betting Contract](../hardhat/contracts/Requester.sol).
 
-> [Live Version Here](amplify.com)
+> [Live Version Here](https://master.d1tk9n2gcgnb7l.amplifyapp.com/)
 
 It is set up to work on Rinkeby, but can be modified to work with other chains.
 

@@ -2,7 +2,7 @@
 
 > A Proof-of-Concept that uses Airnode to send SQL statements from a smart contract to query data directly from a Snowflake DB.
 
-We have a live version of this dApp available on Rinkeby [Here]().
+We have a live version of this dApp available on Rinkeby [Here](https://master.d1tk9n2gcgnb7l.amplifyapp.com/).
 
 ## Under the Hood
 
