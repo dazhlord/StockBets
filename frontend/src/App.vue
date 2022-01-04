@@ -6,21 +6,12 @@
     <v-app-bar app outlined color="primary">
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Logo"
+          alt="Snowflake Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="https://newcomp.com/wp-content/uploads/2020/03/snowflake-logo-white.png"
           transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
+          width="200"
         />
       </div>
     </v-app-bar>
@@ -28,6 +19,11 @@
     <v-main>
       <dApp />
     </v-main>
+    <v-footer app height="40px" flat color="transparent">
+      <v-col class="text-center text-caption" cols="12">
+        Powered by Airnode
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
