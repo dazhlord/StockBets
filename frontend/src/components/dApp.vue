@@ -200,6 +200,7 @@
                 label="Sponsor Wallet Address"
                 outlined
                 readonly
+                @focus="$event.target.select()"
                 class="address"
                 dense
                 :value="sponsorWalletAddress"
@@ -213,6 +214,7 @@
                 color="primary"
                 dense
                 class="address"
+                @focus="$event.target.select()"
                 readonly
                 :value="requesterAddress"
               >
