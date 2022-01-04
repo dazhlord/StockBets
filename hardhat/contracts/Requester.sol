@@ -33,7 +33,7 @@ contract Requester is RrpRequester {
     // The API takes in an SQL statement in the POST body
     // ============================================================
     string public constant dailyCasesSQL =
-        "SELECT SUM(CONFIRMED) AS Cases FROM JHU_DASHBOARD_COVID_19_GLOBAL WHERE COUNTRY_REGION = 'United States' AND LAST_REPORTED_FLAG = TRUE;";
+        "select SUM(CASES_TOTAL_PER_100000) AS CASES FROM WHO_DAILY_REPORT WHERE COUNTRY_REGION IS NOT NULL;";
 
     bytes public parameters =
         abi.encode(

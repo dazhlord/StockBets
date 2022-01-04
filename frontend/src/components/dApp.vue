@@ -7,12 +7,17 @@
           <v-card-text class="black--text">
             <v-card-title>
               <h1>CovidBets</h1>
+              <v-btn icon align="start" v-if="walletConnected">
+                <v-icon small color="primary" @click="infoDialog = true">
+                  mdi-information-outline
+                </v-icon>
+              </v-btn>
               <v-spacer></v-spacer>
               <template v-if="walletConnected">
                 House Wallet: {{ houseWalletBalance }} ETH
               </template>
             </v-card-title>
-            <v-card-subtitle>
+            <v-card-subtitle class="grey--text text--darken-2">
               Covid cases prediction game powered by Snowflake DB and Airnode
             </v-card-subtitle>
 
@@ -150,6 +155,73 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog max-width="60%" v-model="infoDialog">
+      <v-card>
+        <v-card-title>
+          Snowflake PoC
+          <v-spacer></v-spacer>
+          <v-btn icon @click="infoDialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text>
+          This is a Proof of Concept that shows how to make SQL queries to the
+          Snowflake DB from a Smart Contract using
+          <a href="https://docs.api3.org/airnode/v0.3/" target="_blank">
+            Airnode
+            <v-icon x-small> mdi-open-in-new </v-icon>
+          </a>
+
+          . Users can bet on their prediction of cases tomorrow against cases
+          today. Airnode will fetch the latest cases from the Snowflake DB and
+          store them on chain.
+          <br />
+          <br />
+          Snowflake DB allows us to query
+          <a href="https://covid19.who.int/table" target="_blank">
+            WHO Daily Report
+            <v-icon x-small> mdi-open-in-new </v-icon>
+          </a>
+          data. In this case we are querying the global "Cases - newly reported
+          in last 7 days"
+        </v-card-text>
+        <v-card-text>
+          The SQL query hardcoded into the contract is:
+          <br />
+          <code>
+            SELECT SUM(CASES_TOTAL_PER_100000) AS CASES FROM WHO_DAILY_REPORT
+            WHERE COUNTRY_REGION IS NOT NULL;
+          </code>
+        </v-card-text>
+        <v-card-text>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="Sponsor Wallet Address"
+                outlined
+                readonly
+                class="address"
+                dense
+                :value="sponsorWalletAddress"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-text-field
+                label="House Wallet Address"
+                outlined
+                color="primary"
+                dense
+                class="address"
+                readonly
+                :value="requesterAddress"
+              >
+              </v-text-field>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -171,6 +243,7 @@ export default {
     sponsorWalletAddress: "",
     sponsorWalletBalance: 0,
     sponsorWalletDialog: false,
+    infoDialog: false,
     fundingSponsorWallet: false,
     airnodeRrp: null,
     fundAmount: 0.01,
@@ -186,7 +259,7 @@ export default {
         return json.address;
       } catch (error) {
         console.log(error);
-        return "0xd5C5c9f0124056B1a91dcD8c19595A167f7f1DF2";
+        return "0xA04E5B85ecC4Ea2819AfD56feedaCd9219029795";
       }
     },
     requesterAbi() {
@@ -393,6 +466,9 @@ export default {
 /* Make the .amount bigger */
 .amount {
   font-size: 1.5rem;
+}
+.address {
+  font-size: 0.95em;
 }
 .v-textarea textarea {
   line-height: 400px;

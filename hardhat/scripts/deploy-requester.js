@@ -30,7 +30,7 @@ async function main() {
     JSON.stringify({ address: requester.address })
   );
   console.log("Address saved to requesterAddress.json");
-  await fundSponsorWallet();
+  // await fundSponsorWallet();
 }
 
 // We recommend this pattern to be able to use async/await everywhere
