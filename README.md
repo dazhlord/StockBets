@@ -10,6 +10,8 @@
 
 ![Airnode RRP Flow White](https://user-images.githubusercontent.com/26840412/150416083-f40acb84-fbd6-4d5a-a493-9a7a1a6dc53c.png)
 
+> More detailed [Diagram Here](https://docs.api3.org/airnode/v0.3/grp-developers/call-an-airnode.html)
+
 
 This PoC illustrates how easy it is to set up a contract to make API calls to an API that is running an Airnode. The process goes like this:
 
