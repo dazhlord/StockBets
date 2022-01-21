@@ -4,16 +4,7 @@
     :style="{ background: $vuetify.theme.themes[theme].background }"
   >
     <v-app-bar app outlined color="primary">
-      <div class="d-flex align-center">
-        <v-img
-          alt="Snowflake Logo"
-          class="shrink mr-2"
-          contain
-          src="https://newcomp.com/wp-content/uploads/2020/03/snowflake-logo-white.png"
-          transition="scale-transition"
-          width="200"
-        />
-      </div>
+      <div class="d-flex align-center"></div>
     </v-app-bar>
 
     <v-main>
