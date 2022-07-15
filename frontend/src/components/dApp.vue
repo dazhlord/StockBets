@@ -253,11 +253,12 @@ export default {
     betAmount: 1,
     betDirection: "Higher",
     bet: {},
+    RRPAddress: "0xa0AD79D995DdeeB18a14eAef56A549A04e3Aa1Bd",
   }),
   computed: {
     requesterAddress() {
       try {
-        const json = require("../../../hardhat/scripts/requesterAddress.json");
+        const json = require("../requesterAddress.json");
         return json.address;
       } catch (error) {
         console.log(error);
@@ -270,19 +271,7 @@ export default {
     },
     rrpAbi() {
       const airnodeProtocol = require("@api3/airnode-protocol");
-      const rrpArtifacts = airnodeProtocol.AirnodeRrpFactory;
-      return rrpArtifacts.abi;
-    },
-
-    RRPAddress() {
-      switch (Number(this.chainId)) {
-        case 31337:
-          return "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-        case 4:
-          return "0xC11593B87f258672b8eB02d9A723a429b15E9E03";
-        default:
-          return "0x5FbDB2315678afecb367f032d93F642f64180aa3";
-      }
+      return airnodeProtocol.AirnodeRrpV0Factory.abi;
     },
     above() {
       return this.betDirection == "Higher";
@@ -441,14 +430,14 @@ export default {
         this.printToLog("Done!\n\n");
         await this.connectWallet();
         let results = await bettingContract.requestResults(requestId);
-        const higher = this.bet.yesterdaysCases < Number(results);
+        const higher = this.bet.yesterdaysPrice < Number(results);
         if ((this.bet.above && higher) || (!this.bet.above && !higher)) {
           this.printToLog(`You won ${this.betAmount} ETH! 🎉`);
-          this.printToLog(`Cases Yesterday: ${this.bet.yesterdaysCases}`);
+          this.printToLog(`Cases Yesterday: ${this.bet.yesterdaysPrice}`);
           this.printToLog(`Cases Today: ${Number(results)}`);
         } else {
           this.printToLog(`You lost ${this.betAmount} ETH! 😭`);
-          this.printToLog(`Cases Yesterday: ${this.bet.yesterdaysCases}`);
+          this.printToLog(`Cases Yesterday: ${this.bet.yesterdaysPrice}`);
           this.printToLog(`Cases Today: ${Number(results)}`);
         }
         console.log({ results });
