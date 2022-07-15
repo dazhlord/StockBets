@@ -25,6 +25,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
  */
 module.exports = {
   solidity: "0.8.9",
+  defaultNetwork: "hardhat",
   paths: {
     artifacts: "../frontend/src/artifacts",
   },
@@ -33,10 +34,10 @@ module.exports = {
       url: process.env.PROVIDER_URL,
       accounts: [wallet.privateKey],
     },
-    // hardhat: {
-    //   forking: {
-    //     url: process.env.PROVIDER_URL,
-    //   },
-    // },
+    hardhat: {
+      forking: {
+        url: process.env.PROVIDER_URL,
+      },
+    },
   },
 };

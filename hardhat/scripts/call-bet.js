@@ -1,31 +1,16 @@
 require("dotenv").config();
-const hre = require("hardhat");
-const airnodeAdmin = require("@api3/airnode-admin");
-const { encode } = require("@api3/airnode-abi");
+const { getRRPContract, getRequesterContract } = require("./utils");
+
 async function main() {
   console.log(`Calling Bet...`);
-  // We get the contract to deploy
-  const [account] = await hre.ethers.getSigners();
+  const airnodeRrp = await getRRPContract();
+  const requester = await getRequesterContract();
+  const { signer } = requester;
 
-  const { address: requesterAddress } = require("./requesterAddress.json");
+  // //    Are we betting that tomorrows cases will be above or below todays cases
+  let { provider } = signer;
 
-  //   const requesterAddress = "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1";
-
-  const airnodeRrp = await hre.ethers.getContractAt(
-    "AirnodeRrp",
-    "0x5fbdb2315678afecb367f032d93f642f64180aa3"
-  );
-
-  const providerURL = process.env.PROVIDER_URL;
-  const provider = new ethers.providers.JsonRpcProvider(providerURL);
-  let requester = await hre.ethers.getContractAt("Requester", requesterAddress);
-
-  const bet = await requester.bets(account.address);
-  console.log({ open: bet.open, cases: Number(bet.yesterdaysCases) });
-
-  const params = [];
-
-  const receipt = await requester.callBet(encode(params));
+  const receipt = await requester.callBet();
 
   // Wait until the transaction is mined
   const requestId = await new Promise((resolve) =>
@@ -41,17 +26,17 @@ async function main() {
     provider.once(airnodeRrp.filters.FulfilledRequest(null, requestId), resolve)
   );
   console.log("Fulfilled!");
-  let { yesterdaysCases, above } = await requester.bets(account.address);
-  let todaysCases = await requester.requestResults(requestId);
-  todaysCases = Number(todaysCases);
-  yesterdaysCases = Number(yesterdaysCases);
-  //   console.log({ open, cases: Number(yesterdaysCases) });
-  // If above is true and todaysCases is above yesterdaysCases
-  //   or if above is false and todaysCases is below yesterdaysCases
+  let { yesterdaysPrice, above } = await requester.bets(signer.address);
+  let todaysPrice = await requester.requestResults(requestId);
+  todaysPrice = Number(todaysPrice);
+  yesterdaysPrice = Number(yesterdaysPrice);
+  //   console.log({ open, cases: Number(yesterdaysPrice) });
+  // If above is true and todaysPrice is above yesterdaysPrice
+  //   or if above is false and todaysPrice is below yesterdaysPrice
   //  then we win
   if (
-    (above && todaysCases > yesterdaysCases) ||
-    (!above && todaysCases < yesterdaysCases)
+    (above && todaysPrice > yesterdaysPrice) ||
+    (!above && todaysPrice < yesterdaysPrice)
   ) {
     console.log("You won!");
   } else {

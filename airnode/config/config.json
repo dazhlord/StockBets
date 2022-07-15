@@ -3,64 +3,161 @@
     {
       "authorizers": [],
       "contracts": {
-        "AirnodeRrp": "0xC11593B87f258672b8eB02d9A723a429b15E9E03"
+        "AirnodeRrp": "0xa0AD79D995DdeeB18a14eAef56A549A04e3Aa1Bd"
       },
       "id": "4",
-      "providers": {
-        "Rinkeby": {
-          "url": "${PROVIDER_URL}"
-        }
+      "options": {
+        "txType": "eip1559",
+        "priorityFee": {
+          "value": 3.12,
+          "unit": "gwei"
+        },
+        "baseFeeMultiplier": 2,
+        "fulfillmentGasLimit": 500000
       },
-      "type": "evm"
+      "maxConcurrency": 100,
+      "blockHistoryLimit": 300,
+      "minConfirmations": 0,
+      "type": "evm",
+      "providers": {
+        "rinkeby": {
+          "url": "${RINKEBY_RPC}"
+        }
+      }
+    },
+    {
+      "authorizers": [],
+      "contracts": {
+        "AirnodeRrp": "0xa0AD79D995DdeeB18a14eAef56A549A04e3Aa1Bd"
+      },
+      "id": "31337",
+      "options": {
+        "txType": "eip1559",
+        "priorityFee": {
+          "value": 3.12,
+          "unit": "gwei"
+        },
+        "baseFeeMultiplier": 2,
+        "fulfillmentGasLimit": 500000
+      },
+      "maxConcurrency": 100,
+      "blockHistoryLimit": 300,
+      "minConfirmations": 0,
+      "type": "evm",
+      "providers": {
+        "local": {
+          "url": "http://host.docker.internal:8545"
+        }
+      }
     }
   ],
   "nodeSettings": {
     "cloudProvider": {
       "type": "local"
     },
-    "airnodeWalletMnemonic": "${AIRNODE_WALLET_MNEMONIC}",
+    "airnodeWalletMnemonic": "${MNEMONIC}",
     "logFormat": "plain",
     "logLevel": "INFO",
-    "nodeVersion": "0.3.1",
-    "stage": "Staging",
+    "nodeVersion": "0.6.5",
+    "stage": "dev",
     "heartbeat": {
       "enabled": false
     },
     "httpGateway": {
       "enabled": true,
-      "apiKey": "${HTTP_GATEWAY_API_KEY}"
+      "apiKey": "${HTTP_GATEWAY_API_KEY}",
+      "maxConcurrency": 20
+    },
+    "httpSignedDataGateway": {
+      "enabled": false
     }
   },
   "triggers": {
     "rrp": [
       {
-        "endpointId": "0xd3e4bdc2aedbdd3a24942b92486d51fdab98a2e1f3bdc5a3297be8752d5654e0",
-        "endpointName": "POST /sendStatement",
-        "oisTitle": "CovidBetsAPI"
+        "endpointId": "0xf2c5caa3575e07b81b1d51410953dd083522c06495437acd83255a87647865c7",
+        "endpointName": "GET /events.json",
+        "oisTitle": "DxFeed"
+      }
+    ],
+    "httpSignedData": [],
+    "http": [
+      {
+        "endpointId": "0xf2c5caa3575e07b81b1d51410953dd083522c06495437acd83255a87647865c7",
+        "endpointName": "GET /events.json",
+        "oisTitle": "DxFeed"
       }
     ]
   },
   "ois": [
     {
       "oisFormat": "1.0.0",
-      "title": "CovidBetsAPI",
-      "version": "0.3.1",
+      "title": "DxFeed",
+      "version": "v1",
       "apiSpecifications": {
         "servers": [
           {
-            "url": "https://tp0oxzw0fd.execute-api.us-east-1.amazonaws.com/latest"
+            "url": "https://tools.dxfeed.com/webservice/rest"
           }
         ],
-        "security": {},
+        "security": {
+          "relayChainId": [],
+          "relaySponsor": [],
+          "relayRequester": []
+        },
         "components": {
-          "securitySchemes": {}
+          "securitySchemes": {
+            "relayChainId": {
+              "in": "header",
+              "type": "relayChainId",
+              "name": "chainId"
+            },
+            "relaySponsor": {
+              "in": "header",
+              "type": "relaySponsorAddress",
+              "name": "sponsorAddress"
+            },
+            "relayRequester": {
+              "in": "header",
+              "type": "relayRequesterAddress",
+              "name": "requesterAddress"
+            }
+          }
         },
         "paths": {
-          "/sendStatement": {
-            "post": {
+          "/events.json": {
+            "get": {
               "parameters": [
                 {
-                  "name": "statement",
+                  "name": "event",
+                  "in": "query"
+                },
+                {
+                  "name": "fromTime",
+                  "in": "query"
+                },
+                {
+                  "name": "indent",
+                  "in": "query"
+                },
+                {
+                  "name": "source",
+                  "in": "query"
+                },
+                {
+                  "name": "symbol",
+                  "in": "query"
+                },
+                {
+                  "name": "timeout",
+                  "in": "query"
+                },
+                {
+                  "name": "toTime",
+                  "in": "query"
+                },
+                {
+                  "name": "format",
                   "in": "query"
                 }
               ]
@@ -70,10 +167,10 @@
       },
       "endpoints": [
         {
-          "name": "POST /sendStatement",
+          "name": "GET /events.json",
           "operation": {
-            "method": "post",
-            "path": "/sendStatement"
+            "method": "get",
+            "path": "/events.json"
           },
           "reservedParameters": [
             {
@@ -86,17 +183,66 @@
               "name": "_times"
             }
           ],
-          "fixedOperationParameters": [],
+          "fixedOperationParameters": [
+            {
+              "operationParameter": {
+                "name": "format",
+                "in": "query"
+              },
+              "value": "json"
+            }
+          ],
           "parameters": [
             {
-              "name": "statement",
+              "name": "event",
               "operationParameter": {
-                "name": "statement",
+                "name": "event",
+                "in": "query"
+              }
+            },
+            {
+              "name": "fromTime",
+              "operationParameter": {
+                "name": "fromTime",
+                "in": "query"
+              }
+            },
+            {
+              "name": "indent",
+              "operationParameter": {
+                "name": "indent",
+                "in": "query"
+              }
+            },
+            {
+              "name": "source",
+              "operationParameter": {
+                "name": "source",
+                "in": "query"
+              }
+            },
+            {
+              "name": "symbol",
+              "operationParameter": {
+                "name": "symbol",
+                "in": "query"
+              }
+            },
+            {
+              "name": "timeout",
+              "operationParameter": {
+                "name": "timeout",
+                "in": "query"
+              }
+            },
+            {
+              "name": "toTime",
+              "operationParameter": {
+                "name": "toTime",
                 "in": "query"
               }
             }
-          ],
-          "testable": true
+          ]
         }
       ]
     }

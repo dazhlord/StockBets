@@ -1,35 +1,33 @@
 const { ethers } = require("hardhat");
-const { sponsorRequester } = require("./sponsor-requester");
-const { fundSponsorWallet } = require("./fund-sponsor-wallet");
 const fs = require("fs");
+const { getParams, fundSponsorWallet, getRRPContract } = require("./utils");
 
 async function main() {
   const Requester = await ethers.getContractFactory("Requester");
-  const requester = await Requester.deploy(
-    "0xC11593B87f258672b8eB02d9A723a429b15E9E03",
-    { value: ethers.utils.parseEther(".1") }
-  );
+  const rrp = await getRRPContract();
+  const requester = await Requester.deploy(rrp.address, {
+    value: ethers.utils.parseEther(".1"),
+  });
 
   await requester.deployed();
 
   console.log("Requester deployed to:", requester.address);
-
-  // console.log("Funding mnemonic wallet...");
-  const mnemonic = process.env.AIRNODE_WALLET_MNEMONIC;
-  const airnodeWallet = new ethers.Wallet.fromMnemonic(mnemonic);
-  // const [account] = await ethers.getSigners();
-  //   Send 10 eth to airnodeWallet
-  // await account.sendTransaction({
-  //   to: airnodeWallet.address,
-  //   value: ethers.utils.parseEther("10"),
-  // });
-  // console.log("Done!");
-  await sponsorRequester(requester.address);
   fs.writeFileSync(
     "./scripts/requesterAddress.json",
     JSON.stringify({ address: requester.address })
   );
+  fs.writeFileSync(
+    "../frontend/src/requesterAddress.json",
+    JSON.stringify({ address: requester.address })
+  );
   console.log("Address saved to requesterAddress.json");
+
+  const { sponsorWalletAddress } = await getParams();
+  console.log(`Setting sponsor wallet address to ${sponsorWalletAddress}`);
+  await requester.setSponsorWallet(sponsorWalletAddress);
+  console.log("Sponsor wallet address set");
+  await fundSponsorWallet();
+
   // await fundSponsorWallet();
 }
 

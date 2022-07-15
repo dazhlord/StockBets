@@ -1,7 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 
-import "@api3/airnode-protocol/contracts/rrp/requesters/RrpRequester.sol";
+import "@api3/airnode-protocol/contracts/rrp/requesters/RrpRequesterV0.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 /* ==================================================================
 
@@ -19,52 +20,50 @@ Wins pay 2x the bet amount.
 
 ================================================================== */
 
-contract Requester is RrpRequester {
-    struct Bet {
-        uint256 amount;
-        bool above;
-        address player;
-        uint256 startTime;
-        int256 yesterdaysCases;
-        bool open;
-    }
-
-    // ============================================================
-    // The API takes in an SQL statement in the POST body
-    // ============================================================
-    string public constant dailyCasesSQL =
-        "select SUM(CASES_TOTAL_PER_100000) AS CASES FROM WHO_DAILY_REPORT WHERE COUNTRY_REGION IS NOT NULL;";
+contract Requester is RrpRequesterV0, Ownable {
+    // Globals
+    address public constant airnodeAddress =
+        0x5Cd4BaD00e25513B1f86075bC2d066fa68B8512B;
+    bytes32 public constant endpointId =
+        0xf2c5caa3575e07b81b1d51410953dd083522c06495437acd83255a87647865c7;
+    address public sponsorWalletAddress;
 
     bytes public parameters =
         abi.encode(
-            bytes32("1SSS"),
-            bytes32("statement"),
-            dailyCasesSQL,
+            bytes32("1SSSS"),
+            bytes32("symbol"),
+            "TSLA",
+            bytes32("event"),
+            "Trade",
             bytes32("_path"),
-            "CASES",
+            "Trade.TSLA.price",
             bytes32("_type"),
             "int256"
         );
-    // ============================================================
-    // Airnode Params
-    // ============================================================
-    address public constant airnodeWalletAddress =
-        0x4cFe1AD38Ca18807a4d5533FD5556d4d2b73f691;
 
-    address public constant sponsorWalletAddress =
-        0x1648cF440ee5b0dA25DFe78E7CBB94668a374c94;
-
-    bytes32 public constant endpointId =
-        0xd3e4bdc2aedbdd3a24942b92486d51fdab98a2e1f3bdc5a3297be8752d5654e0;
-
+    // Mappings
     mapping(bytes32 => bool) public incomingFulfillments;
     mapping(bytes32 => address) public requesterAddresses;
     mapping(address => Bet) public bets;
     mapping(bytes32 => int256) public requestResults;
 
+    struct Bet {
+        uint256 amount;
+        bool above;
+        address player;
+        uint256 startTime;
+        int256 yesterdaysPrice;
+        bool open;
+    }
+
+
     // Fund the house wallet on deployment
-    constructor(address airnodeAddress) payable RrpRequester(airnodeAddress) {
+    constructor(address _rrpAddress) payable RrpRequesterV0(_rrpAddress) {
         require(msg.value > 0, "Must send some ether to fund the house wallet");
+    }
+
+    function setSponsorWallet(address _sponsorWalletAddress) public onlyOwner {
+        sponsorWalletAddress = _sponsorWalletAddress;
     }
 
     // ============================================================
@@ -80,17 +79,17 @@ contract Requester is RrpRequester {
             above: _above,
             player: msg.sender,
             startTime: block.timestamp,
-            yesterdaysCases: 0,
+            yesterdaysPrice: 0,
             open: false
         });
         // Call Airnode to get todays Covid cases
         bytes32 requestId = airnodeRrp.makeFullRequest(
-            airnodeWalletAddress,
+            airnodeAddress,
             endpointId,
-            airnodeWalletAddress,
+            address(this),
             sponsorWalletAddress,
             address(this),
-            this.fulfillYesterdaysCases.selector,
+            this.fulfillYesterdaysPrice.selector,
             parameters
         );
 
@@ -104,18 +103,18 @@ contract Requester is RrpRequester {
     // Called by Airnode when the Covid cases are returned
     // Opens the bet and assigns the number of cases
     // ============================================================
-    function fulfillYesterdaysCases(bytes32 requestId, bytes calldata data)
+    function fulfillYesterdaysPrice(bytes32 requestId, bytes calldata data)
         external
         onlyAirnodeRrp
     {
         require(incomingFulfillments[requestId], "No such request made");
         delete incomingFulfillments[requestId];
-        int256 cases = abi.decode(data, (int256));
-        requestResults[requestId] = cases;
+        int256 price = abi.decode(data, (int256));
+        requestResults[requestId] = price;
         address requester = requesterAddresses[requestId];
         require(!bets[requester].open, "Bet already opened!");
         bets[requester].open = true;
-        bets[requester].yesterdaysCases = cases;
+        bets[requester].yesterdaysPrice = price;
     }
 
     // ============================================================
@@ -146,9 +145,9 @@ contract Requester is RrpRequester {
         // }
 
         bytes32 requestId = airnodeRrp.makeFullRequest(
-            airnodeWalletAddress,
+            airnodeAddress,
             endpointId,
-            airnodeWalletAddress,
+            address(this),
             sponsorWalletAddress,
             address(this),
             this.closeBet.selector,
@@ -174,17 +173,17 @@ contract Requester is RrpRequester {
         require(bets[requester].open, "Bet already closed");
         bets[requester].open = false;
 
-        int256 cases = abi.decode(data, (int256));
+        int256 price = abi.decode(data, (int256));
 
         // Simulates higher cases than yesterday
-        cases += 1;
+        price += 5;
 
-        requestResults[requestId] = cases;
+        requestResults[requestId] = price;
 
         Bet memory bet = bets[requester];
         if (
-            (bet.above && cases > bet.yesterdaysCases) ||
-            (!bet.above && cases <= bet.yesterdaysCases)
+            (bet.above && price > bet.yesterdaysPrice) ||
+            (!bet.above && price <= bet.yesterdaysPrice)
         ) {
             payable(bet.player).transfer(bet.amount * 2);
         }

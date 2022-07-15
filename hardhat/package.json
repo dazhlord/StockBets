@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "yarn deploy-requester && yarn make-bet && yarn call-bet",
     "build": "npx hardhat compile",
     "make-bet": "npx hardhat run --network localhost ./scripts/make-bet.js",
     "call-bet": "npx hardhat run --network localhost ./scripts/call-bet.js",
@@ -28,10 +28,10 @@
     "hardhat": "^2.8.0"
   },
   "dependencies": {
-    "@api3/airnode-abi": "^0.3.1",
-    "@api3/airnode-admin": "^0.3.1",
-    "@api3/airnode-protocol": "^0.3.1",
-    "@openzeppelin/contracts": "^4.4.1",
+    "@api3/airnode-abi": "^0.7.2",
+    "@api3/airnode-admin": "^0.7.2",
+    "@api3/airnode-protocol": "^0.7.2",
+    "@openzeppelin/contracts": "^4.7.0",
     "dotenv": "^10.0.0"
   }
 }

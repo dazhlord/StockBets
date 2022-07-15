@@ -1,31 +1,16 @@
 require("dotenv").config();
-const hre = require("hardhat");
-const airnodeAdmin = require("@api3/airnode-admin");
-const { encode } = require("@api3/airnode-abi");
+const { ethers } = require("hardhat");
+const { getRRPContract, getRequesterContract } = require("./utils");
 async function main() {
   // We get the contract to deploy
   console.log("Making Bet...");
-  const [account] = await hre.ethers.getSigners();
-  const { address: requesterAddress } = require("./requesterAddress.json");
+  const airnodeRrp = await getRRPContract();
+  const requester = await getRequesterContract();
+  const { signer } = requester;
 
-  //    Are we betting that tomorrows cases will be above or below todays cases
+  // //    Are we betting that tomorrows cases will be above or below todays cases
   const betAbove = true;
-
-  //   const requesterAddress = "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1";
-
-  const airnodeRrp = await hre.ethers.getContractAt(
-    "AirnodeRrp",
-    "0x5fbdb2315678afecb367f032d93f642f64180aa3"
-  );
-
-  const providerURL = process.env.PROVIDER_URL;
-  const provider = new ethers.providers.JsonRpcProvider(providerURL);
-  let requester = await hre.ethers.getContractAt("Requester", requesterAddress);
-
-  const bet = await requester.bets(account.address);
-  console.log({ open: bet.open, cases: Number(bet.yesterdaysCases) });
-
-  const params = [];
+  let { provider } = signer;
 
   const receipt = await requester.makeBet(betAbove, {
     value: ethers.utils.parseEther("0.5"),
@@ -45,14 +30,14 @@ async function main() {
     provider.once(airnodeRrp.filters.FulfilledRequest(null, requestId), resolve)
   );
   console.log("Fulfilled!");
-  let { yesterdaysCases, above, amount } = await requester.bets(
-    account.address
+  let { yesterdaysPrice, above, amount } = await requester.bets(
+    signer.address
   );
   amount = ethers.utils.formatEther(amount);
-  yesterdaysCases = Number(yesterdaysCases);
+  yesterdaysPrice = Number(yesterdaysPrice);
   const aboveStr = above ? "above" : "below";
   console.log(
-    `${amount} Eth Bet placed that tomorrows cases will be ${aboveStr} ${yesterdaysCases}!`
+    `${amount} Eth Bet placed that tomorrows cases will be ${aboveStr} ${yesterdaysPrice}!`
   );
   //   console.log({ open, cases: Number(yesterdaysCases) });
 }
