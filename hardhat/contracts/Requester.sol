@@ -6,10 +6,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /* ==================================================================
 
-A simple requester contract that calls Airnode for Covid data.
+A simple requester contract that calls Airnode for Stock data.
 
-Users can bet on the daily cases of Covid-19 today being above or below
-the daily cases 24 hours from the initial bet. 
+Users can bet on TSLA stock price being above or below todays price.
 
 The user would use the `makeBet` and `callBet` functions, while
 Airnode would handle the results of the bet with the other 2 
@@ -67,7 +66,7 @@ contract Requester is RrpRequesterV0, Ownable {
     }
 
     // ============================================================
-    // Make a bet on the cases of Covid-19 being higher or lower
+    // Make a bet on the TSLA price being higher or lower
     // Intended to be called by the player.
     // ============================================================
     function makeBet(bool _above) external payable {
@@ -82,7 +81,7 @@ contract Requester is RrpRequesterV0, Ownable {
             yesterdaysPrice: 0,
             open: false
         });
-        // Call Airnode to get todays Covid cases
+        // Call Airnode to get todays price
         bytes32 requestId = airnodeRrp.makeFullRequest(
             airnodeAddress,
             endpointId,
@@ -94,14 +93,14 @@ contract Requester is RrpRequesterV0, Ownable {
         );
 
         // Map the requestId to the address of the requester
-        // to be used by Airnode in `fulfillYesterdaysCases`
+        // to be used by Airnode in `fulfillYesterdaysPrice`
         incomingFulfillments[requestId] = true;
         requesterAddresses[requestId] = msg.sender;
     }
 
     // ============================================================
-    // Called by Airnode when the Covid cases are returned
-    // Opens the bet and assigns the number of cases
+    // Called by Airnode when the price returned
+    // Opens the bet and assigns the price
     // ============================================================
     function fulfillYesterdaysPrice(bytes32 requestId, bytes calldata data)
         external
@@ -175,7 +174,7 @@ contract Requester is RrpRequesterV0, Ownable {
 
         int256 price = abi.decode(data, (int256));
 
-        // Simulates higher cases than yesterday
+        // Simulates higher price than yesterday
         price += 5;
 
         requestResults[requestId] = price;

@@ -7,7 +7,7 @@ async function main() {
   const requester = await getRequesterContract();
   const { signer } = requester;
 
-  // //    Are we betting that tomorrows cases will be above or below todays cases
+  // //    Are we betting that tomorrows price will be above or below todays price
   let { provider } = signer;
 
   const receipt = await requester.callBet();
@@ -20,7 +20,7 @@ async function main() {
     })
   );
 
-  console.log("Made request for todays cases:\n", requestId);
+  console.log("Made request for todays price:\n", requestId);
 
   await new Promise((resolve) =>
     provider.once(airnodeRrp.filters.FulfilledRequest(null, requestId), resolve)
@@ -30,7 +30,6 @@ async function main() {
   let todaysPrice = await requester.requestResults(requestId);
   todaysPrice = Number(todaysPrice);
   yesterdaysPrice = Number(yesterdaysPrice);
-  //   console.log({ open, cases: Number(yesterdaysPrice) });
   // If above is true and todaysPrice is above yesterdaysPrice
   //   or if above is false and todaysPrice is below yesterdaysPrice
   //  then we win

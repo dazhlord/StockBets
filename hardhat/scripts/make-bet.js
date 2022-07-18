@@ -8,7 +8,7 @@ async function main() {
   const requester = await getRequesterContract();
   const { signer } = requester;
 
-  // //    Are we betting that tomorrows cases will be above or below todays cases
+  // //    Are we betting that tomorrows price will be above or below todays price
   const betAbove = true;
   let { provider } = signer;
 
@@ -24,7 +24,7 @@ async function main() {
     })
   );
 
-  console.log("Request for todays cases made:\n", requestId);
+  console.log("Request for todays price made:\n", requestId);
 
   await new Promise((resolve) =>
     provider.once(airnodeRrp.filters.FulfilledRequest(null, requestId), resolve)
@@ -37,9 +37,8 @@ async function main() {
   yesterdaysPrice = Number(yesterdaysPrice);
   const aboveStr = above ? "above" : "below";
   console.log(
-    `${amount} Eth Bet placed that tomorrows cases will be ${aboveStr} ${yesterdaysPrice}!`
+    `${amount} Eth Bet placed that tomorrows price will be ${aboveStr} ${yesterdaysPrice}!`
   );
-  //   console.log({ open, cases: Number(yesterdaysCases) });
 }
 
 // We recommend this pattern to be able to use async/await everywhere
