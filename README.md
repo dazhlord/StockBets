@@ -1,4 +1,4 @@
-# Covid Bets
+# StockBets
 
 > A Proof-of-Concept that uses Airnode to send API requests from a smart contract to query data directly from DxFeed's public stock price API.
 
