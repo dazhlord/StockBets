@@ -40,7 +40,7 @@ If you are attempting to run the code manually/locally, you only really need to 
 yarn start-airnode
 ```
 
-2. 
+2. [Set up blockchain](/hardhat)
 
 3. [Start up your Front End GUI](/frontend)
 

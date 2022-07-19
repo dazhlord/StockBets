@@ -12,4 +12,10 @@ npm install
 npx hardhat node
 ```
 
-2. In a new terminal, deploy our contract to the 
+2. In a new terminal, deploy our contract
+
+```sh
+cd hardhat
+
+npm run deploy-requester
+```
