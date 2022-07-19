@@ -1,8 +1,6 @@
 # Covid Bets
 
-> A Proof-of-Concept that uses Airnode to send SQL statements from a smart contract to query data directly from DxFeed's public stock price API.
-
-### Try the Live Demo [Here](https://master.d1tk9n2gcgnb7l.amplifyapp.com/)!
+> A Proof-of-Concept that uses Airnode to send API requests from a smart contract to query data directly from DxFeed's public stock price API.
 
 -------
 
@@ -33,19 +31,19 @@ This PoC illustrates how easy it is to set up a contract to make API calls to an
 
 ## Instructions
 
-> If you are interested in trying out the code, we recommend using our GitPod environment to run your own Airnode!
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/camronh/CovidBets-SF)
 
 If you are attempting to run the code manually/locally, you only really need to do the following:
 
-- Start up your Airnode
+1. Start up your Airnode
 
 ```sh
 yarn start-airnode
 ```
 
-- [Start up your Front End GUI](/frontend)
+2. 
+
+3. [Start up your Front End GUI](/frontend)
+
 
 ## Recommended Reading
 

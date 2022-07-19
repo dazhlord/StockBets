@@ -2,100 +2,96 @@
   <v-container>
     <br />
     <v-row justify="center" align="center">
-      <v-col cols="12" md="9">
-        <v-card elevation="10">
-          <v-card-text class="black--text">
-            <v-card-title>
-              <h1>CovidBets</h1>
-              <v-btn icon align="start" v-if="walletConnected">
-                <v-icon small color="primary" @click="infoDialog = true">
-                  mdi-information-outline
-                </v-icon>
-              </v-btn>
-              <v-spacer></v-spacer>
-              <template v-if="walletConnected">
-                House Wallet: {{ houseWalletBalance }} ETH
-              </template>
-            </v-card-title>
-            <v-card-subtitle class="grey--text text--darken-2">
-              Covid cases prediction game powered by Snowflake DB and Airnode
-            </v-card-subtitle>
+      <v-card elevation="10">
+        <v-card-text class="black--text">
+          <v-card-title>
+            <h1>StockBets</h1>
+            <v-btn icon align="start" v-if="walletConnected">
+              <v-icon small color="primary" @click="infoDialog = true">
+                mdi-information-outline
+              </v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <template v-if="walletConnected">
+              House Wallet: {{ houseWalletBalance }} ETH
+            </template>
+          </v-card-title>
+          <v-card-subtitle class="grey--text text--darken-2">
+            Tesla Stock Price prediction game powered by DxFeed's public API and
+            Airnode
+          </v-card-subtitle>
 
-            <v-card-text align="center" justify="center">
-              <v-sheet v-if="!walletConnected">
-                <v-btn @click="connectWallet" outlined color="primary"
-                  >Connect Your Wallet</v-btn
-                >
-              </v-sheet>
-              <v-sheet v-else>
-                <v-card-title>Bet Details</v-card-title>
-                <v-card-text>
-                  <v-row align="center" justify="center">
-                    <v-col cols="12" md="5">
-                      <p>I think that Covid-19 cases tomorrow will be</p>
+          <v-card-text align="center" justify="center">
+            <v-sheet v-if="!walletConnected">
+              <v-btn @click="connectWallet" outlined color="primary"
+                >Connect Your Wallet</v-btn
+              >
+            </v-sheet>
+            <v-sheet v-else>
+              <v-card-title>Bet Details</v-card-title>
+              <v-card-text>
+                <v-row align="center" justify="center">
+                  <v-col cols="12" md="5">
+                    <p>I think that TSLA price tomorrow will be</p>
 
-                      <v-select
-                        :items="['Higher', 'Lower']"
-                        v-model="betDirection"
-                        outlined
+                    <v-select
+                      :items="['Higher', 'Lower']"
+                      v-model="betDirection"
+                      outlined
+                      color="primary"
+                      :readonly="bet.open || loading"
+                    >
+                      <template v-slot:selection="{ item }">
+                        <span class="d-flex justify-center" style="width: 100%">
+                          {{ item }}
+                        </span>
+                      </template>
+                    </v-select>
+                    <p>than they are today.</p>
+                  </v-col>
+                  <v-col cols="12" md="1"> </v-col>
+                  <v-col cols="12" md="5" align="center" justify="center">
+                    <v-card-text>
+                      <v-text-field
+                        suffix="ETH"
+                        class="amount"
                         color="primary"
+                        align="right"
+                        label="Bet Amount"
+                        outlined
                         :readonly="bet.open || loading"
-                      >
-                        <template v-slot:selection="{ item }">
-                          <span
-                            class="d-flex justify-center"
-                            style="width: 100%"
-                          >
-                            {{ item }}
-                          </span>
-                        </template>
-                      </v-select>
-                      <p>than they are today.</p>
-                    </v-col>
-                    <v-col cols="12" md="1"> </v-col>
-                    <v-col cols="12" md="5" align="center" justify="center">
-                      <v-card-text>
-                        <v-text-field
-                          suffix="ETH"
-                          class="amount"
-                          color="primary"
-                          align="right"
-                          label="Bet Amount"
-                          outlined
-                          :readonly="bet.open || loading"
-                          v-model="betAmount"
-                          type="number"
-                        />
-                      </v-card-text>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-sheet>
-            </v-card-text>
-            <v-card-actions v-if="walletConnected">
-              <v-spacer></v-spacer>
-              <v-btn
-                :disabled="bet.open || loading"
-                @click="makeBet"
-                outlined
-                color="primary"
-              >
-                Place Bet
-              </v-btn>
-              <v-spacer></v-spacer>
-              <v-btn
-                :disabled="!bet.open || loading"
-                @click="callBet"
-                outlined
-                color="primary"
-              >
-                Call Bet
-              </v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
+                        v-model="betAmount"
+                        type="number"
+                      />
+                    </v-card-text>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-sheet>
           </v-card-text>
-        </v-card>
-      </v-col>
+          <v-card-actions v-if="walletConnected">
+            <v-spacer></v-spacer>
+            <v-btn
+              :disabled="bet.open || loading"
+              @click="makeBet"
+              outlined
+              color="primary"
+            >
+              Place Bet
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn
+              :disabled="!bet.open || loading"
+              @click="callBet"
+              outlined
+              color="primary"
+            >
+              Call Bet
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card-text>
+      </v-card>
     </v-row>
     <br />
     <br />
@@ -165,34 +161,29 @@
           </v-btn>
         </v-card-title>
         <v-card-text>
-          This is a Proof of Concept that shows how to make SQL queries to the
-          Snowflake DB from a Smart Contract using
-          <a href="https://docs.api3.org/airnode/v0.3/" target="_blank">
+          This is a Proof of Concept that shows how to make API requests to the
+          DxFeed public API from a Smart Contract using
+          <a href="https://docs.api3.org/airnode/v0.7/" target="_blank">
             Airnode
             <v-icon x-small> mdi-open-in-new </v-icon>
           </a>
 
-          . Users can bet on their prediction of cases tomorrow against cases
-          today. Airnode will fetch the latest cases from the Snowflake DB and
-          store them on chain.
+          . Users can bet on their prediction of price tomorrow against price
+          today. Airnode will fetch the latest price data from the DxFeed API
+          and store them on chain.
           <br />
           <br />
-          Snowflake DB allows us to query
-          <a href="https://covid19.who.int/table" target="_blank">
-            WHO Daily Report
+          DxFeed allows us to query
+          <a
+            href="https://kb.dxfeed.com/en/data-access/rest-api.html"
+            target="_blank"
+          >
+            all kinds of stock data
             <v-icon x-small> mdi-open-in-new </v-icon>
           </a>
-          data. In this case we are querying the global "Cases - newly reported
-          in last 7 days"
+          In this case we are querying the Trade data for TSLA stock.
         </v-card-text>
-        <v-card-text>
-          The SQL query hardcoded into the contract is:
-          <br />
-          <code>
-            SELECT SUM(CASES_TOTAL_PER_100000) AS CASES FROM WHO_DAILY_REPORT
-            WHERE COUNTRY_REGION IS NOT NULL;
-          </code>
-        </v-card-text>
+
         <v-card-text>
           <v-row>
             <v-col cols="12" md="6">
@@ -384,7 +375,7 @@ export default {
 
         this.printToLog("Airnode request made!");
         this.printToLog("RequestId: " + requestId);
-        this.printToLog("Waiting for Airnode to respond with COVID cases...");
+        this.printToLog("Waiting for Airnode to respond with stock price...");
 
         await new Promise((resolve) =>
           provider.once(
@@ -392,7 +383,9 @@ export default {
             resolve
           )
         );
-        this.printToLog("Your bet has been placed!");
+        let results = await bettingContract.requestResults(requestId);
+        this.printToLog(`The current price for TSLA is ${results}`);
+        this.printToLog("Your bet has been placed!\n\n");
         await this.connectWallet();
       } catch (error) {
         this.printToLog(error.message);
@@ -419,7 +412,7 @@ export default {
         );
         this.printToLog("Airnode request made!");
         this.printToLog("RequestId: " + requestId);
-        this.printToLog("Waiting for Airnode to respond with COVID cases...");
+        this.printToLog("Waiting for Airnode to respond with stock price...");
 
         await new Promise((resolve) =>
           provider.once(
@@ -433,12 +426,12 @@ export default {
         const higher = this.bet.yesterdaysPrice < Number(results);
         if ((this.bet.above && higher) || (!this.bet.above && !higher)) {
           this.printToLog(`You won ${this.betAmount} ETH! 🎉`);
-          this.printToLog(`Cases Yesterday: ${this.bet.yesterdaysPrice}`);
-          this.printToLog(`Cases Today: ${Number(results)}`);
+          this.printToLog(`Price Yesterday: ${this.bet.yesterdaysPrice}`);
+          this.printToLog(`Price Today: ${Number(results)}`);
         } else {
           this.printToLog(`You lost ${this.betAmount} ETH! 😭`);
-          this.printToLog(`Cases Yesterday: ${this.bet.yesterdaysPrice}`);
-          this.printToLog(`Cases Today: ${Number(results)}`);
+          this.printToLog(`Price Yesterday: ${this.bet.yesterdaysPrice}`);
+          this.printToLog(`Price Today: ${Number(results)}`);
         }
         console.log({ results });
       } catch (error) {
